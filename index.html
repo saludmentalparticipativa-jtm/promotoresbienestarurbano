@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promotores de Bienestar Urbano | Arequipa</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+
+    <!-- Configuración de Paleta Arequipa -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        arequipa: {
+                            carmesi: '#8a1538', /* Rojo Carmesí bandera Arequipa */
+                            carmesiDark: '#660e28',
+                            carmesiLight: '#b0214a',
+                        },
+                        sillar: {
+                            50: '#fdfdfd',
+                            100: '#f5f5f4', /* Color piedra sillar claro */
+                            200: '#e7e5e4',
+                            800: '#44403c',
+                        },
+                        oro: '#ca8a04', /* Dorado escudo */
+                        acentoVerde: '#0f766e', /* Para contraste de bienestar */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+        
+        /* Fondo Misti Estilizado */
+        .bg-misti {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23f5f5f4" fill-opacity="0.5" d="M0,288L48,272C96,256,192,224,288,213.3C384,203,480,213,576,192C672,171,768,117,864,106.7C960,96,1056,128,1152,149.3C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path><path fill="%23e7e5e4" fill-opacity="0.8" d="M0,192L60,197.3C120,203,240,213,360,197.3C480,181,600,139,720,122.7C840,107,960,117,1080,149.3C1200,181,1320,235,1380,261.3L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: bottom;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Gráfica: Círculos Concéntricos */
+        .circulo-exterior {
+            width: 320px; height: 320px;
+            border-radius: 50%;
+            border: 3px solid #ca8a04; /* Oro */
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .circulo-medio {
+            width: 220px; height: 220px;
+            border-radius: 50%;
+            border: 3px solid #0f766e; /* Acento verde */
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .circulo-interior {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background-color: #8a1538; /* Carmesí */
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 15px -3px rgba(138, 21, 56, 0.4);
+            z-index: 10;
+        }
+        .etiqueta-circulo {
+            position: absolute;
+            background: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Animaciones */
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Conectores Ecosistema */
+        .ecosistema-arrow {
+            position: absolute;
+            width: 2px;
+            background-color: #cbd5e1;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="bg-sillar-50 text-sillar-800 font-sans antialiased">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-arequipa-carmesi/20 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-arequipa-carmesi rounded-lg flex items-center justify-center text-white font-bold shadow-md">
+                        <i class="fa-solid fa-archway"></i> <!-- Símbolo arquería sillar -->
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-arequipa-carmesiDark">Bienestar Urbano <span class="font-normal text-sillar-800">AQp</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#vision" class="text-sillar-800 hover:text-arequipa-carmesi transition font-medium">Visión</a>
+                    <a href="#graficas" class="text-sillar-800 hover:text-arequipa-carmesi transition font-medium">El Modelo</a>
+                    <a href="#metodologia" class="text-sillar-800 hover:text-arequipa-carmesi transition font-medium">Metodología</a>
+                    <a href="#cronograma" class="text-sillar-800 hover:text-arequipa-carmesi transition font-medium">Cronograma</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section con Arequipa Vibe -->
+    <header id="vision" class="relative bg-white overflow-hidden pb-10">
+        <!-- Textura Sillar / Fondo -->
+        <div class="absolute inset-0 z-0 opacity-5 bg-[radial-gradient(#8a1538_1px,transparent_1px)] [background-size:20px_20px]"></div>
+        <div class="bg-misti"></div> <!-- Misti silhouette -->
+        
+        <div class="container mx-auto px-4 py-16 sm:py-24 relative z-10 text-center max-w-5xl mx-auto">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-arequipa-carmesi/10 text-arequipa-carmesi text-sm font-bold mb-6 tracking-widest uppercase border border-arequipa-carmesi/20">
+                MPA | Gerencia de Desarrollo Social | Consorcio Universitario
+            </span>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-black text-sillar-800 mb-6 leading-tight">
+                Desarrollo de Promotores Urbanos de <span class="text-transparent bg-clip-text bg-gradient-to-r from-arequipa-carmesi to-arequipa-carmesiLight">Bienestar Social</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-sillar-800 mb-10 leading-relaxed max-w-3xl mx-auto font-medium bg-white/60 p-4 rounded-xl backdrop-blur-sm">
+                Hacia una Arequipa líder en Salud Mental Comunitaria e Intersectorial. <br>
+                Una propuesta estratégica para convertir el espacio urbano en un escenario terapéutico, hacia nuestro Quinto Centenario.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#graficas" class="inline-flex justify-center items-center px-8 py-3 font-bold rounded-lg text-white bg-arequipa-carmesi hover:bg-arequipa-carmesiDark transition shadow-lg hover:shadow-xl hover:-translate-y-1">
+                    <i class="fa-solid fa-map-location-dot mr-2"></i> Explorar el Modelo
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sección de Gráficas Recreadas del PDF -->
+    <section id="graficas" class="py-20 bg-sillar-100 border-t border-sillar-200">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl font-bold text-arequipa-carmesiDark mb-4 font-serif">Transformando Desafíos Urbanos</h2>
+                <p class="text-sillar-800 font-medium">Del consultorio al barrio: Integración de los espacios de la Ciudad Blanca.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Gráfica 1: Ecosistema Urbano (Recreación PDF) -->
+                <div class="bg-white p-8 rounded-2xl shadow-md border border-sillar-200 relative overflow-hidden">
+                    <h3 class="text-center font-bold text-lg mb-8 text-sillar-800 uppercase tracking-wide">Ecosistema de Integración</h3>
+                    
+                    <div class="relative w-full h-[300px] flex items-center justify-center">
+                        <!-- Nodo Central -->
+                        <div class="absolute z-10 bg-sillar-50 border-2 border-arequipa-carmesi w-28 h-28 rounded-xl flex flex-col items-center justify-center shadow-lg">
+                            <i class="fa-solid fa-tree-city text-3xl text-arequipa-carmesi mb-2"></i>
+                            <span class="font-bold text-sm text-sillar-800">PLAZAS</span>
+                        </div>
+                        
+                        <!-- Nodo Arriba Derecha (Barrios) -->
+                        <div class="absolute top-4 right-4 bg-orange-50 border-2 border-orange-400 w-28 h-24 rounded-xl flex flex-col items-center justify-center shadow">
+                            <i class="fa-solid fa-house-chimney-window text-2xl text-orange-500 mb-1"></i>
+                            <span class="font-bold text-xs text-center leading-tight text-sillar-800">BARRIOS<br>TRADICIONALES</span>
+                        </div>
+
+                        <!-- Nodo Abajo Izquierda (Mercados) -->
+                        <div class="absolute bottom-4 left-4 bg-emerald-50 border-2 border-emerald-500 w-28 h-24 rounded-xl flex flex-col items-center justify-center shadow">
+                            <i class="fa-solid fa-store text-2xl text-emerald-600 mb-1"></i>
+                            <span class="font-bold text-xs text-sillar-800">MERCADOS</span>
+                        </div>
+
+                        <!-- Nodo Abajo Derecha (Bienestar) -->
+                        <div class="absolute bottom-4 right-4 bg-oro/10 border-2 border-oro w-28 h-24 rounded-xl flex flex-col items-center justify-center shadow">
+                            <i class="fa-solid fa-people-group text-2xl text-oro mb-1"></i>
+                            <span class="font-bold text-xs text-center leading-tight text-sillar-800">BIENESTAR<br>COLECTIVO</span>
+                        </div>
+
+                        <!-- Conectores visuales (SVG Arrows) -->
+                        <svg class="absolute inset-0 w-full h-full z-0 pointer-events-none" style="overflow: visible;">
+                            <line x1="50%" y1="50%" x2="80%" y2="20%" stroke="#ca8a04" stroke-width="3" stroke-dasharray="5,5" />
+                            <line x1="50%" y1="50%" x2="20%" y2="80%" stroke="#0f766e" stroke-width="3" stroke-dasharray="5,5" />
+                            <line x1="50%" y1="50%" x2="80%" y2="80%" stroke="#8a1538" stroke-width="3" stroke-dasharray="5,5" />
+                            <line x1="20%" y1="80%" x2="80%" y2="80%" stroke="#94a3b8" stroke-width="2" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Gráfica 2: Red de Soporte Barrial (Recreación PDF) -->
+                <div class="bg-white p-8 rounded-2xl shadow-md border border-sillar-200 flex flex-col items-center">
+                    <h3 class="text-center font-bold text-lg mb-8 text-sillar-800 uppercase tracking-wide">La Triada del Cambio / Soporte</h3>
+                    
+                    <!-- Círculos Concéntricos CSS -->
+                    <div class="circulo-exterior">
+                        <span class="etiqueta-circulo text-oro" style="top: -15px;">Comunidad / Barrio</span>
+                        
+                        <div class="circulo-medio">
+                            <span class="etiqueta-circulo text-acentoVerde" style="top: -15px;">Lideresas OSB (Vaso de Leche)</span>
+                            
+                            <div class="circulo-interior relative group">
+                                <div class="absolute inset-0 bg-arequipa-carmesi rounded-full animate-ping opacity-20"></div>
+                                <span>Estudiante<br>(Promotor)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 text-center bg-arequipa-carmesi/5 p-4 rounded-lg border border-arequipa-carmesi/10">
+                        <p class="text-sm font-bold text-arequipa-carmesi mb-1">Estrategia:</p>
+                        <p class="text-sm text-sillar-800">Transformación de receptores de ayuda a "Agentes de Bienestar Urbano". El conocimiento se queda en el barrio.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Metodología Paso a Paso (Recreación Gráfica PDF) -->
+    <section id="metodologia" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-arequipa-carmesiDark font-serif mb-4">Metodología de Intervención: Paso a Paso</h2>
+                <p class="text-sillar-800">Integración total con la Ley N.º 30364 para la Erradicación de la Violencia.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Paso 1 -->
+                <div class="relative p-6 bg-sillar-50 rounded-2xl border-t-4 border-oro shadow-sm hover:shadow-md transition">
+                    <div class="w-16 h-16 bg-white border-2 border-oro rounded-full flex items-center justify-center mb-4 text-oro absolute -top-8 left-6">
+                        <i class="fa-solid fa-map-location-dot text-2xl"></i> <!-- Icono Lupa/Mapa -->
+                    </div>
+                    <h3 class="font-bold text-lg mt-6 mb-2 text-sillar-800">Mes 1: Mapeo y Potencia</h3>
+                    <p class="text-sm text-sillar-800 leading-relaxed">Identificar liderazgos activos. "La Mesa del Barrio". Uso del "Mapa Parlante".</p>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="relative p-6 bg-sillar-50 rounded-2xl border-t-4 border-acentoVerde shadow-sm hover:shadow-md transition mt-8 md:mt-0">
+                    <div class="w-16 h-16 bg-white border-2 border-acentoVerde rounded-full flex items-center justify-center mb-4 text-acentoVerde absolute -top-8 left-6">
+                        <i class="fa-solid fa-file-handshake text-2xl"></i> <!-- Icono Documento/Manos -->
+                    </div>
+                    <h3 class="font-bold text-lg mt-6 mb-2 text-sillar-800">Mes 2: Capacidades</h3>
+                    <p class="text-sm text-sillar-800 leading-relaxed">Talleres "Entre Pares". Capacitación en el uso de la Guía. Espacios de descarga emocional.</p>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="relative p-6 bg-sillar-50 rounded-2xl border-t-4 border-arequipa-carmesi shadow-sm hover:shadow-md transition mt-8 md:mt-0">
+                    <div class="w-16 h-16 bg-white border-2 border-arequipa-carmesi rounded-full flex items-center justify-center mb-4 text-arequipa-carmesi absolute -top-8 left-6">
+                        <i class="fa-solid fa-bullhorn text-2xl"></i> <!-- Icono Megáfono -->
+                    </div>
+                    <h3 class="font-bold text-lg mt-6 mb-2 text-sillar-800">Mes 3: Articulación</h3>
+                    <p class="text-sm text-sillar-800 leading-relaxed">Sistemas de Alerta Temprana (WhatsApp vecinal). Campañas ("Plato Lleno, Corazón Contento").</p>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="relative p-6 bg-sillar-50 rounded-2xl border-t-4 border-sillar-800 shadow-sm hover:shadow-md transition mt-8 md:mt-0">
+                    <div class="w-16 h-16 bg-white border-2 border-sillar-800 rounded-full flex items-center justify-center mb-4 text-sillar-800 absolute -top-8 left-6">
+                        <i class="fa-solid fa-gavel text-2xl"></i> <!-- Icono Mazo/Justicia -->
+                    </div>
+                    <h3 class="font-bold text-lg mt-6 mb-2 text-sillar-800">Mes 4: Autonomía</h3>
+                    <p class="text-sm text-sillar-800 leading-relaxed">Cabildos Abiertos de Salud Mental. Las OSB presentan necesidades a la Municipalidad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cronograma Maestro Integrado (Diagrama Gantt CSS) -->
+    <section id="cronograma" class="py-20 bg-sillar-100 border-t border-sillar-200">
+        <div class="container mx-auto px-4">
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-bold text-arequipa-carmesiDark font-serif mb-4">Cronograma Maestro Integrado</h2>
+                <p class="text-sillar-800 max-w-2xl mx-auto font-medium">
+                    11 Meses para institucionalizar el bienestar social en Arequipa.
+                </p>
+            </div>
+
+            <!-- Tabla Visual Tipo Gantt CSS -->
+            <div class="bg-white rounded-2xl shadow-lg border border-sillar-200 overflow-x-auto p-6">
+                <div class="min-w-[800px]">
+                    <!-- Cabecera Meses -->
+                    <div class="grid grid-cols-12 gap-1 mb-4 border-b-2 border-arequipa-carmesi pb-2">
+                        <div class="col-span-2 font-bold text-sillar-800 uppercase text-xs">Fase / Tarea</div>
+                        <div class="col-span-1 text-center font-bold text-arequipa-carmesi text-xs">M1</div>
+                        <div class="col-span-1 text-center font-bold text-arequipa-carmesi text-xs">M2</div>
+                        <div class="col-span-1 text-center font-bold text-arequipa-carmesi text-xs">M3</div>
+                        <div class="col-span-1 text-center font-bold text-arequipa-carmesi text-xs">M4</div>
+                        <div class="col-span-1 text-center font-bold text-arequipa-carmesi text-xs">M5</div>
+                        <div class="col-span-1 text-center font-bold text-arequipa-carmesi text-xs">M6</div>
+                        <div class="col-span-1 text-center font-bold text-arequipa-carmesi text-xs">M7</div>
+                        <div class="col-span-1 text-center font-bold text-arequipa-carmesi text-xs">M8</div>
+                        <div class="col-span-1 text-center font-bold text-arequipa-carmesi text-xs">M9</div>
+                        <div class="col-span-1 text-center font-bold text-arequipa-carmesi text-xs">M10</div>
+                        <div class="col-span-1 text-center font-bold text-arequipa-carmesi text-xs hidden">M11</div> <!-- Ajuste para cuadrícula -->
+                    </div>
+
+                    <!-- Fila 1 -->
+                    <div class="grid grid-cols-12 gap-1 items-center mb-3">
+                        <div class="col-span-2 text-xs font-bold text-sillar-800">Gestión y Alianzas</div>
+                        <div class="col-span-1 bg-oro rounded-md h-6 shadow-sm flex items-center justify-center text-[10px] text-white font-bold">M1</div>
+                        <div class="col-span-9"></div>
+                    </div>
+
+                    <!-- Fila 2 -->
+                    <div class="grid grid-cols-12 gap-1 items-center mb-3">
+                        <div class="col-span-2 text-xs font-bold text-sillar-800">Formación Teórica</div>
+                        <div class="col-span-1"></div>
+                        <div class="col-span-3 bg-acentoVerde rounded-md h-6 shadow-sm flex items-center justify-center text-[10px] text-white font-bold px-2 whitespace-nowrap overflow-hidden">Chalecos (M4)</div>
+                        <div class="col-span-7"></div>
+                    </div>
+
+                    <!-- Fila 3 -->
+                    <div class="grid grid-cols-12 gap-1 items-center mb-3">
+                        <div class="col-span-2 text-xs font-bold text-sillar-800">Piloto y Asignación</div>
+                        <div class="col-span-4"></div>
+                        <div class="col-span-1 bg-blue-500 rounded-md h-6 shadow-sm flex items-center justify-center text-[10px] text-white font-bold">M5</div>
+                        <div class="col-span-6"></div>
+                    </div>
+
+                    <!-- Fila 4 -->
+                    <div class="grid grid-cols-12 gap-1 items-center mb-3">
+                        <div class="col-span-2 text-xs font-bold text-sillar-800">Intervención Territorial</div>
+                        <div class="col-span-5"></div>
+                        <div class="col-span-5 bg-arequipa-carmesi rounded-md h-6 shadow-sm flex items-center justify-center text-[10px] text-white font-bold relative">
+                            M6 - M10
+                            <span class="absolute -top-6 bg-sillar-800 text-white text-[9px] px-1 rounded">Mapa Parlante (M6)</span>
+                            <span class="absolute -bottom-6 bg-sillar-800 text-white text-[9px] px-1 rounded">Cabildo (M9)</span>
+                        </div>
+                    </div>
+
+                    <!-- Fila 5 -->
+                    <div class="grid grid-cols-12 gap-1 items-center">
+                        <div class="col-span-2 text-xs font-bold text-sillar-800">Evaluación y Cierre</div>
+                        <div class="col-span-10 flex justify-end">
+                            <div class="w-1/12 bg-sillar-800 rounded-md h-6 shadow-sm flex items-center justify-center text-[10px] text-white font-bold relative">
+                                M11
+                                <span class="absolute -top-6 right-0 bg-oro text-sillar-800 text-[9px] font-bold px-1 rounded whitespace-nowrap">Ordenanza Municipal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impacto (Chart.js adaptado) -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-oro font-bold uppercase tracking-wider text-sm">Academia + RSU</span>
+                    <h2 class="text-3xl font-bold text-arequipa-carmesiDark font-serif mt-2 mb-6">Producción Científica</h2>
+                    <p class="text-sillar-800 mb-6 font-medium">
+                        La Municipalidad pone el territorio; la Universidad pone la evidencia. La data extraída de las OSB permitirá publicaciones científicas indexadas sobre acceso, discapacidad, y burnout en zonas urbanas de Arequipa.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 bg-sillar-50 p-3 rounded-lg border border-sillar-200">
+                            <div class="w-8 h-8 rounded-full bg-arequipa-carmesi/10 flex items-center justify-center text-arequipa-carmesi"><i class="fa-solid fa-seedling"></i></div>
+                            <span class="text-sm font-bold text-sillar-800">Biohuertos de Sanación (Acción RSU)</span>
+                        </li>
+                        <li class="flex items-center gap-3 bg-sillar-50 p-3 rounded-lg border border-sillar-200">
+                            <div class="w-8 h-8 rounded-full bg-arequipa-carmesi/10 flex items-center justify-center text-arequipa-carmesi"><i class="fa-solid fa-palette"></i></div>
+                            <span class="text-sm font-bold text-sillar-800">Arte Urbano: Prevención suicidio jóvenes</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-sillar-50 p-6 rounded-2xl shadow-inner border border-sillar-200">
+                    <h3 class="text-center font-bold text-sillar-800 mb-4">Distribución del Esfuerzo Formativo (180 Hrs)</h3>
+                    <div class="relative w-full h-[300px]">
+                        <canvas id="timeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-arequipa-carmesiDark text-sillar-100 py-12 border-t-4 border-oro">
+        <div class="container mx-auto px-4 text-center">
+            <i class="fa-solid fa-archway text-4xl text-oro mb-4"></i>
+            <h2 class="text-2xl font-bold font-serif mb-2">Arequipa 2025: Un Hito Histórico</h2>
+            <p class="text-sillar-200 max-w-2xl mx-auto mb-8 text-sm">
+                A 10 años de la Reforma en Salud Mental y la Ley N.º 30364. Posicionando a Arequipa como referente latinoamericano de ciudad sostenible e inclusiva hacia el Quinto Centenario.
+            </p>
+            <div class="pt-8 border-t border-arequipa-carmesiLight text-xs text-sillar-200">
+                &copy; 2024 Municipalidad Provincial de Arequipa - Gerencia de Desarrollo Social.<br>
+                Consorcio Universitario de Arequipa.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script de Gráficos -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gráfico Circular de Horas/Módulos
+            const ctxTime = document.getElementById('timeChart').getContext('2d');
+            new Chart(ctxTime, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Bienestar & Sociedad', 'Prevención Violencia', 'Métodos (Guía)', 'Participación & OSB'],
+                    datasets: [{
+                        data: [25, 25, 30, 20],
+                        backgroundColor: [
+                            '#8a1538', // Carmesi
+                            '#ca8a04', // Oro
+                            '#0f766e', // Verde
+                            '#44403c'  // Gris oscuro
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#f5f5f4',
+                        hoverOffset: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#44403c', font: {family: 'Inter', weight: 'bold'} } }
+                    },
+                    cutout: '65%'
+                }
+            });
+        });
+    </script>
+</body>
+</html>
