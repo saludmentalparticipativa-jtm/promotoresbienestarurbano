@@ -133,6 +133,8 @@
                     <a href="#graficas" class="text-sillar-800 hover:text-arequipa-carmesi transition font-medium">El Modelo</a>
                     <a href="#metodologia" class="text-sillar-800 hover:text-arequipa-carmesi transition font-medium">Metodología</a>
                     <a href="#cronograma" class="text-sillar-800 hover:text-arequipa-carmesi transition font-medium">Cronograma</a>
+                    <!-- Añadido el enlace a descargas en el menú -->
+                    <a href="#descarga" class="text-arequipa-carmesi font-bold hover:text-arequipa-carmesiDark transition">Descargar PDF</a>
                 </div>
             </div>
         </div>
@@ -368,7 +370,7 @@
     </section>
 
     <!-- Impacto (Chart.js adaptado) -->
-    <section class="py-20 bg-white">
+    <section class="py-20 bg-white border-t border-sillar-200">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
@@ -394,6 +396,38 @@
                     <div class="relative w-full h-[300px]">
                         <canvas id="timeChart"></canvas>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- N U E V A   S E C C I Ó N : Descargar PDF -->
+    <section id="descarga" class="py-16 bg-sillar-100 border-t border-sillar-200 relative overflow-hidden">
+        <!-- Detalle de fondo sutil -->
+        <div class="absolute inset-0 z-0 opacity-10 bg-[radial-gradient(#ca8a04_1px,transparent_1px)] [background-size:20px_20px]"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl border border-sillar-200 p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 transform transition hover:shadow-2xl">
+                
+                <!-- Icono destacado -->
+                <div class="w-24 h-24 md:w-32 md:h-32 shrink-0 bg-arequipa-carmesi/10 rounded-full flex items-center justify-center border-4 border-arequipa-carmesi/20">
+                    <i class="fa-regular fa-file-pdf text-5xl md:text-6xl text-arequipa-carmesi"></i>
+                </div>
+                
+                <!-- Textos y Botón -->
+                <div class="flex-1 text-center md:text-left">
+                    <h2 class="text-3xl font-bold text-arequipa-carmesiDark font-serif mb-2">Documento Oficial del Proyecto</h2>
+                    <p class="text-sillar-800 font-medium mb-6">
+                        Accede al informe completo, la malla curricular y todos los detalles estratégicos y metodológicos del proyecto Promotores de Bienestar Urbano de Arequipa.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <!-- El atributo download indica al navegador que debe descargar el archivo -->
+                        <a href="Presentacion_Proyecto_Promotores_Bienestar_Urbano.pdf" download="Presentacion_Proyecto_Promotores_Bienestar_Urbano.pdf" class="inline-flex justify-center items-center px-8 py-3 font-bold rounded-lg text-white bg-arequipa-carmesi hover:bg-arequipa-carmesiDark transition shadow-lg hover:shadow-xl hover:-translate-y-1">
+                            <i class="fa-solid fa-download mr-2 text-xl"></i> Descargar Presentación
+                        </a>
+                    </div>
+                    <p class="text-xs text-sillar-500 mt-3 font-medium">Formato PDF | Documento Institucional MPA & Consorcio Universitario</p>
                 </div>
             </div>
         </div>
@@ -448,8 +482,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
-
